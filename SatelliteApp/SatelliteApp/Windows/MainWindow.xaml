@@ -1,0 +1,143 @@
+﻿<Window x:Class="SatelliteApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SatelliteApp"
+        xmlns:gmap ="clr-namespace:GMap.NET.WindowsPresentation;assembly=GMap.NET.WindowsPresentation"
+        mc:Ignorable="d"
+        Title="Спутник" Height="800" Width="1500" Closing="Window_Closing" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="650"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Auto"  Grid.Column="0">
+            <StackPanel>
+                <GroupBox Header="Конфигурации:">
+                    <StackPanel>
+                        <ItemsControl Name="ICConfigurations">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <ComboBox DisplayMemberPath="Name" SelectionChanged="ComboBox_SelectionChanged" SelectedItem="{Binding Value, Mode=TwoWay}" ItemsSource="{Binding ConfigurationsBase}"></ComboBox>
+                                        <Button Content="-" Width="30" Name="BtnDeleteConfig" Click="BtnDeleteConfig_Click"></Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Button Content="Добавить конфигурацию" Name="BtnAddConfig" Click="BtnAddConfig_Click" Width="200"></Button>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Показатели">
+                    <StackPanel  Name="SPParameters"></StackPanel>
+                </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
+        <ItemsControl x:Name="ICCharts" Grid.Column="1">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="1"></UniformGrid>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <gmap:GMapControl MapProvider="{Binding MapProvider}" Grid.Column="0" Name="MapMain" Loaded="MapMain_Loaded" Margin="5"></gmap:GMapControl>
+                <StackPanel Grid.Column="1" Width="40" VerticalAlignment="Bottom">
+                    <Button Width="30" Height="30" Content="+" TextBlock.FontWeight="Bold" TextBlock.FontSize="15" Name="BtnMapZoomPlus" Click="BtnMapZoomPlus_Click"/>
+                    <Button Width="30" Height="30" Content="-" TextBlock.FontWeight="Bold" TextBlock.FontSize="15" Name="BtnMapZoomMinus" Click="BtnMapZoomMinus_Click"/>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBox Grid.Row="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Name="TBData" IsReadOnly="True"></TextBox>
+                <StackPanel Grid.Row="1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Name="TBSend" IsEnabled="False" Grid.Column="0" KeyUp="TBSend_KeyUp"></TextBox>
+                        <Button Grid.Column="1" IsEnabled="False" Name="BtnSend" Background="White" Click="BtnSend_Click" Width="30" Height="30">
+                            <Image Source="/Assets/Icons/Send.png" Margin="0"/>
+                        </Button>
+                    </Grid>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox Content="Автопрокрутка" IsChecked="True" Name="CBAutoScroll"></CheckBox>
+                        <CheckBox Content="Показать отметки времени" IsChecked="True" Name="CBTimeMark"></CheckBox>
+                        <Button Content="Очистить вывод" Name="BtnClear" Click="BtnClear_Click"></Button>
+                        <Button Grid.Column="1" Name="BtnAction" Click="BtnAction_Click" Background="White" Width="30" Height="30">
+                            <Image Name="ImAction" Source="/Assets/Icons/Start.png" Margin="0"/>
+                        </Button>
+                        <TextBlock Text="Таймер:"></TextBlock>
+                        <TextBlock Name="TBlockTimer">0</TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Name="SPPort">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Задержка сохранения:" Width="160"></TextBlock>
+                                <TextBox Width="50" Height="30" Name="TBDelay" PreviewTextInput="TBDelay_PreviewTextInput" HorizontalContentAlignment="Center">1</TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Кол-во точек на графике:" Width="160"></TextBlock>
+                                <TextBox Width="50" Name="TBCountPoits" Height="30" HorizontalContentAlignment="Center" PreviewTextInput="TBCountPoits_PreviewTextInput">50000</TextBox>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Height="40">
+                                <TextBlock Text="Пакетов: "></TextBlock>
+                                <TextBlock Name="TBlockCount">0</TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="Экспорт" Width="140" Name="BtnExport" Click="BtnExport_Click"></Button>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Порт:" Width="60"></TextBlock>
+                                <ComboBox Name="CBPorts"></ComboBox>
+                                <Button Width="30" Background="White" Content="↺" FontWeight="Bold" Name="BtnUpdatePorts" Click="BtnUpdatePorts_Click"></Button>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Скорость:" Width="60"></TextBlock>
+                                <ComboBox Name="CBSpeed" SelectedIndex="{Binding SpeedIndexSetting}">
+                                    <ComboBoxItem Content="300"></ComboBoxItem>
+                                    <ComboBoxItem Content="1200"></ComboBoxItem>
+                                    <ComboBoxItem Content="2400"></ComboBoxItem>
+                                    <ComboBoxItem Content="4800"></ComboBoxItem>
+                                    <ComboBoxItem Content="9600"></ComboBoxItem>
+                                    <ComboBoxItem Content="19200"></ComboBoxItem>
+                                    <ComboBoxItem Content="38400"></ComboBoxItem>
+                                    <ComboBoxItem Content="57600"></ComboBoxItem>
+                                    <ComboBoxItem Content="74880"></ComboBoxItem>
+                                    <ComboBoxItem Content="115200"></ComboBoxItem>
+                                    <ComboBoxItem Content="230400"></ComboBoxItem>
+                                    <ComboBoxItem Content="250000"></ComboBoxItem>
+                                    <ComboBoxItem Content="500000"></ComboBoxItem>
+                                    <ComboBoxItem Content="1000000"></ComboBoxItem>
+                                    <ComboBoxItem Content="2000000"></ComboBoxItem>
+                                </ComboBox>
+                                <Button Name="BtnSettings" Background="White" Click="BtnSettings_Click" Width="30" Height="30">
+                                    <Image Source="/Assets/Icons/Settings.jpg" Margin="0"/>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

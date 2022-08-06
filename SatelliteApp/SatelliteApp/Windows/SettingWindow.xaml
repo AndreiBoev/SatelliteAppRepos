@@ -1,0 +1,164 @@
+﻿<Window x:Class="SatelliteApp.Windows.SettingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SatelliteApp.Windows"
+        mc:Ignorable="d"
+        Title="Настройки" Height="450" Width="800" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
+    <Border BorderThickness="1" BorderBrush="Black">
+        <TabControl TabStripPlacement="Left">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" Height="80" Width="220">
+                        <Image Source="/Assets/Icons/Port.png" Height="50" Width="100" />
+                        <TextBlock Text="Порт" FontWeight="Bold"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Скорость(по умолчанию):"></TextBlock>
+                        <ComboBox Name="CBSpeed" SelectedIndex="{Binding SpeedIndexSetting, Mode=TwoWay}">
+                            <ComboBoxItem Content="300"></ComboBoxItem>
+                            <ComboBoxItem Content="1200"></ComboBoxItem>
+                            <ComboBoxItem Content="2400"></ComboBoxItem>
+                            <ComboBoxItem Content="4800"></ComboBoxItem>
+                            <ComboBoxItem Content="9600"></ComboBoxItem>
+                            <ComboBoxItem Content="19200"></ComboBoxItem>
+                            <ComboBoxItem Content="38400"></ComboBoxItem>
+                            <ComboBoxItem Content="57600"></ComboBoxItem>
+                            <ComboBoxItem Content="74880"></ComboBoxItem>
+                            <ComboBoxItem Content="115200"></ComboBoxItem>
+                            <ComboBoxItem Content="230400"></ComboBoxItem>
+                            <ComboBoxItem Content="250000"></ComboBoxItem>
+                            <ComboBoxItem Content="500000"></ComboBoxItem>
+                            <ComboBoxItem Content="1000000"></ComboBoxItem>
+                            <ComboBoxItem Content="2000000"></ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+                    <GroupBox Width="350" HorizontalAlignment="Left">
+                        <GroupBox.Header>
+                            <CheckBox Content="Звуковое уведомление о потере сигнала" Name="CBTimeNotification" Click="CheckBox_Click"></CheckBox>
+                        </GroupBox.Header>
+                        <StackPanel Orientation="Horizontal" IsEnabled="False" Name="SPTimeNotification">
+                            <TextBlock Text="Через"></TextBlock>
+                            <TextBox Width="30" HorizontalContentAlignment="Center" PreviewTextInput="TBTimeNotification_PreviewTextInput" Name="TBTimeNotification" Text="{Binding TimeNotificationSetting, Mode=TwoWay}"></TextBox>
+                            <TextBlock Text="c."></TextBlock>
+                        </StackPanel>
+                    </GroupBox>
+                </StackPanel>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" Height="80" Width="220">
+                        <Image Source="/Assets/Icons/Config.png" Width="100" Height="50" Margin="5" />
+                        <TextBlock Text="Конфигурации" FontWeight="Bold"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0">
+                        <TextBlock Text="Разделитель: "></TextBlock>
+                        <TextBox Text="{Binding Separator, Mode=TwoWay}" Width="20" HorizontalContentAlignment="Center" PreviewTextInput="TextBox_PreviewTextInput"></TextBox>
+                    </StackPanel>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <DataGrid Margin="5 5 0 5" Grid.Column="0" SelectedIndex="0" Name="DGConfigurations" SelectionChanged="DGConfigurations_SelectionChanged" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Имя конфигурации" Width="*" Binding="{Binding Name, Mode=TwoWay}"></DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <DataGrid Name="DGParameters" Margin="5 5 5 5" Grid.Column="1" AutoGenerateColumns="False" ItemsSource="{Binding ElementName=DGConfigurations, Path=SelectedItem.Parameters}">
+                            <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Назначить X" Name="MIAssignX" Click="MIAssignX_Click"></MenuItem>
+                                    <MenuItem Header="Назначить Y" Name="MIAssignY" Click="MIAssignY_Click"></MenuItem>
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Параметр" Width="*" Binding="{Binding Name, Mode=TwoWay}"></DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <GroupBox Grid.Column="2" Header="Карта" Height="100" VerticalAlignment="Top" Margin="0">
+                            <StackPanel VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="X:"></TextBlock>
+                                    <TextBlock Name="TBlockX"></TextBlock>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Y:"></TextBlock>
+                                    <TextBlock Name="TBlockY"></TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                        </GroupBox>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" Height="80" Width="220">
+                        <Image Source="/Assets/Icons/Map.png" Width="100" Height="50" Margin="5" />
+                        <TextBlock Text="Карта" FontWeight="Bold"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Провайдер" ></TextBlock>
+                        <ComboBox Name="CBMapProviders"></ComboBox>
+                    </StackPanel>
+                    <GroupBox Header="Офлайн карта">
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="Импортировать карту" Name="BtnImportMap" Click="BtnImportMap_Click"></Button>
+                            <Button Content="Экспортировать карту" Name="BtnExportMap" Click="BtnExportMap_Click"></Button>
+                        </StackPanel>
+                    </GroupBox>
+                </StackPanel>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" Height="80" Width="220">
+                        <Image Source="/Assets/Icons/Support.png" Width="100" Height="50" Margin="5" />
+                        <TextBlock Text="Поддержка" FontWeight="Bold"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0">
+                        <TextBlock Text="Контактный email:" Width="120"></TextBlock>
+                        <TextBox Width="150" Name="TBEmail"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="1">
+                        <TextBlock Text="Имя отправителя:" Width="120"></TextBlock>
+                        <TextBox Width="150" Name="TBName"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="2">
+                        <TextBlock Text="Тема:" Width="120"></TextBlock>
+                        <TextBox Width="150" Name="TBTopic"></TextBox>
+                    </StackPanel>
+                    <Grid Grid.Row="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Текст сообщения:" Grid.Row="0"></TextBlock>
+                        <TextBox Grid.Row="1" Name="TBText" VerticalContentAlignment="Stretch" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"></TextBox>
+                    </Grid>
+                    <Button Grid.Row="4" Content="Отправить" HorizontalAlignment="Right" Name="BtnSend" Click="BtnSend_Click"></Button>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Border>
+</Window>
