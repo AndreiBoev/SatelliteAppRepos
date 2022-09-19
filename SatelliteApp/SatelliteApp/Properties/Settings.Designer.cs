@@ -85,25 +85,13 @@ namespace SatelliteApp.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("9600")]
-        public int UartSpeed {
-            get {
-                return ((int)(this["UartSpeed"]));
-            }
-            set {
-                this["UartSpeed"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.1")]
-        public string DeviceAddr {
+        public string DeviceUrl {
             get {
-                return ((string)(this["DeviceAddr"]));
+                return ((string)(this["DeviceUrl"]));
             }
             set {
-                this["DeviceAddr"] = value;
+                this["DeviceUrl"] = value;
             }
         }
         

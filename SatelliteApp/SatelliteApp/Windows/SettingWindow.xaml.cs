@@ -32,7 +32,7 @@ namespace SatelliteApp.Windows
 
         private static HttpClient _client = new HttpClient();
         private Properties.Settings _settings = Properties.Settings.Default;
-
+        
         async public static void CreateGetRequestAsync(string path)
         {
             try
@@ -50,13 +50,14 @@ namespace SatelliteApp.Windows
                 SPTimeNotification.IsEnabled = true;
                 CBTimeNotification.IsChecked = true;
             }
+            DataContext = _settings;
             TBTimeNotification.Text = timeNotification.ToString();
             DataContext = Properties.Settings.Default;
             CBMapProviders.ItemsSource = GMapProviders.List;
             _configurations = JsonConvert.DeserializeObject<List<Configuration>>(Properties.Settings.Default.ConfigurationsList);
             DGConfigurations.ItemsSource = _configurations;
             CBMapProviders.SelectedItem = GMapProviders.TryGetProvider(Properties.Settings.Default.MapProvider);
-            TBHost.Text = _settings.DeviceAddr;
+            TBHost.Text = _settings.DeviceUrl;
             TBLat.Text = _settings.HomeLat;
             TBLong.Text = _settings.HomeLong;
             TBAlt.Text = _settings.HomeAlt;
@@ -78,6 +79,7 @@ namespace SatelliteApp.Windows
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            _settings.Save();
             List<string> currentConfiguration = new List<string>();
             foreach (var config in _configurations)
             {
@@ -196,34 +198,29 @@ namespace SatelliteApp.Windows
             }
             BtnSend.IsEnabled = true;
         }
+
+        
         private void BtnSendLatLong_Click(object sender, RoutedEventArgs e)
         {
-            _settings.DeviceAddr=TBHost.Text;
-            _settings.HomeLat=TBLat.Text;
-            _settings.HomeLong=TBLong.Text;
-            _settings.HomeAlt=TBAlt.Text;
-            _settings.Save();
+            
             if (string.IsNullOrWhiteSpace(TBLat.Text) || string.IsNullOrWhiteSpace(TBLong.Text) || string.IsNullOrWhiteSpace(TBAlt.Text))
             {
                 MessageBox.Show("Все поля обязательны для заполнения", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            try
             {
-                string path = "http://"+ TBHost.Text+"/set?homelat=" + TBLat.Text + "&homelong=" + TBLong.Text + "&homealt=" + TBAlt.Text;
-                CreateGetRequestAsync(path);
-                MessageBox.Show("Oтправлено успешно.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
-                
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            BtnSend.IsEnabled = true;
-        }
-        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+                try
+                {
+                    string path = "http://" + TBHost.Text + "/set?homelat=" + TBLat.Text + "&homelong=" + TBLong.Text + "&homealt=" + TBAlt.Text;
+                    CreateGetRequestAsync(path);
+                    MessageBox.Show("Oтправлено успешно.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
 
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
     }
 }

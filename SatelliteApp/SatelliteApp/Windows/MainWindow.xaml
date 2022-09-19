@@ -60,7 +60,7 @@
                     <gmap:GMapControl MapProvider="{Binding MapProvider}" Grid.Column="0" Name="MapMain" Loaded="MapMain_Loaded" Margin="5"></gmap:GMapControl>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <CheckBox Content="Центр карты в новой точке" IsChecked="True" Name="CBNewPiontInCenter"></CheckBox>
+                    <CheckBox Content="Центр карты в новой точке" IsChecked="True" Name="CBNewPointInCenter"></CheckBox>
                 </Grid>
                 
                 

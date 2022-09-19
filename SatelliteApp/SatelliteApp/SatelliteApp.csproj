@@ -230,8 +230,7 @@
   </ItemGroup>
   <ItemGroup>
     <SplashScreen Include="Assets\Icons\Splash.png" />
-    <Resource Include="Assets\Icons\CoordsSet.png" />
-    <Resource Include="Assets\Icons\360.png" />
+    <Resource Include="Assets\Icons\Rotator.png" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
