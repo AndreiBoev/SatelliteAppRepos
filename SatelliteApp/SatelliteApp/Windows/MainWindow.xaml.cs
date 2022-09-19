@@ -58,6 +58,9 @@ namespace SatelliteApp
 
             _selectedConfigurations.Add(new SelectedConfiguration());
             ICConfigurations.ItemsSource = _selectedConfigurations;
+
+            //uart speed
+            CBSpeed.SelectedItem = _settings.UartSpeed;
         }
 
         private void _timer_Tick(object sender, EventArgs e)
@@ -108,7 +111,7 @@ namespace SatelliteApp
                     #region Логика отправки запроса API
                     if (data[0] == "api") // дописать проверку на интернет 
                     {
-                        string path = "http://192.168.1.1/set?satlat="
+                        string path = "http://"+ _settings.DeviceAddr+"/set?satlat="
                                 + data[1] + "&satlong=" + data[2] + "&sath=" + data[3];
                         CreateGetRequestAsync(path);
                         return;
@@ -153,7 +156,14 @@ namespace SatelliteApp
                                     }
                                 }
                                 (MapMain.Markers.FirstOrDefault() as GMapRoute).Points.Add(pointLatLng);
-                                MapMain.Position = pointLatLng;
+                                /*if (CBNewPiontInCenter.IsChecked.Value) { 
+                                    MapMain.Position = pointLatLng;
+
+                                }
+                                else
+                                {*/
+                                    MapMain.Position = MapMain.Position;
+                                //}
                             }
                             break;
                         }
@@ -220,9 +230,14 @@ namespace SatelliteApp
                         return;
                     }
                     #endregion
+                    
                     _port.PortName = CBPorts.Text;
                     _port.BaudRate = int.Parse(CBSpeed.Text);
                     _port.Open();
+                    //save
+                    _settings.UartSpeed = int.Parse(CBSpeed.Text);
+                    _settings.Save();
+                    //save
                     ImAction.Source =
                     new BitmapImage(new Uri(@"/Assets/Icons/Stop.png", UriKind.RelativeOrAbsolute));
                     SPPort.IsEnabled = false;

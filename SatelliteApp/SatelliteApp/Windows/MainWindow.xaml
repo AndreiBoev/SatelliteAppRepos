@@ -52,7 +52,18 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <gmap:GMapControl MapProvider="{Binding MapProvider}" Grid.Column="0" Name="MapMain" Loaded="MapMain_Loaded" Margin="5"></gmap:GMapControl>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <gmap:GMapControl MapProvider="{Binding MapProvider}" Grid.Column="0" Name="MapMain" Loaded="MapMain_Loaded" Margin="5"></gmap:GMapControl>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <CheckBox Content="Центр карты в новой точке" IsChecked="True" Name="CBNewPiontInCenter"></CheckBox>
+                </Grid>
+                
+                
                 <StackPanel Grid.Column="1" Width="40" VerticalAlignment="Bottom">
                     <Button Width="30" Height="30" Content="+" TextBlock.FontWeight="Bold" TextBlock.FontSize="15" Name="BtnMapZoomPlus" Click="BtnMapZoomPlus_Click"/>
                     <Button Width="30" Height="30" Content="-" TextBlock.FontWeight="Bold" TextBlock.FontSize="15" Name="BtnMapZoomMinus" Click="BtnMapZoomMinus_Click"/>

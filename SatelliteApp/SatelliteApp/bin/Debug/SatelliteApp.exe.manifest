@@ -103,14 +103,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SatelliteApp.exe" size="3770848">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SatelliteApp.exe" size="3871712">
       <assemblyIdentity name="SatelliteApp" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>nN7j2ZQUYhHCkZlAXzifSHzRD9FBmlyP9Ud3w3I9vyA=</dsig:DigestValue>
+        <dsig:DigestValue>TQ91zLP+AmisJsswEGZburfaK9p872th3gCEycmHXwg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -231,13 +231,13 @@
       <dsig:DigestValue>p7+mCxo9nZ+a79sCVNkT2Is1umcHief4sk9+msvNh+0=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="SatelliteApp.exe.config" size="2978">
+  <file name="SatelliteApp.exe.config" size="3482">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>KRvCqxQSDId1IaPyDI9yh+RSGLQP1kWRgrnv1yswlhA=</dsig:DigestValue>
+      <dsig:DigestValue>rInbwlgXW/+wpjl24A1+m2eRWS9XxKNCt+YxPyMxax8=</dsig:DigestValue>
     </hash>
   </file>
   <file name="x64\SQLite.Interop.dll" size="1710792">

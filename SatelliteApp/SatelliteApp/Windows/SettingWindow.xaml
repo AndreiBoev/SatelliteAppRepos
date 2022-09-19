@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SatelliteApp.Windows"
         mc:Ignorable="d"
-        Title="Настройки" Height="450" Width="800" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
+        Title="Настройки" Height="470" Width="800" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
     <Border BorderThickness="1" BorderBrush="Black">
-        <TabControl TabStripPlacement="Left">
+        <TabControl TabStripPlacement="Left" SelectionChanged="TabControl_SelectionChanged">
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal" Height="80" Width="220">
@@ -16,7 +16,7 @@
                     </StackPanel>
                 </TabItem.Header>
                 <StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                    <!--<StackPanel Orientation="Horizontal">
                         <TextBlock Text="Скорость(по умолчанию):"></TextBlock>
                         <ComboBox Name="CBSpeed" SelectedIndex="{Binding SpeedIndexSetting, Mode=TwoWay}">
                             <ComboBoxItem Content="300"></ComboBoxItem>
@@ -35,7 +35,7 @@
                             <ComboBoxItem Content="1000000"></ComboBoxItem>
                             <ComboBoxItem Content="2000000"></ComboBoxItem>
                         </ComboBox>
-                    </StackPanel>
+                    </StackPanel>-->
                     <GroupBox Width="350" HorizontalAlignment="Left">
                         <GroupBox.Header>
                             <CheckBox Content="Звуковое уведомление о потере сигнала" Name="CBTimeNotification" Click="CheckBox_Click"></CheckBox>
@@ -83,7 +83,7 @@
                                 </ContextMenu>
                             </DataGrid.ContextMenu>
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Параметр" Width="*" Binding="{Binding Name, Mode=TwoWay}"></DataGridTextColumn>
+                                <DataGridTextColumn Header="Параметр" Width="*" Binding="{Binding Name, Mode=TwoWay}" CanUserSort="false"></DataGridTextColumn>
                             </DataGrid.Columns>
                         </DataGrid>
                         <GroupBox Grid.Column="2" Header="Карта" Height="100" VerticalAlignment="Top" Margin="0">
@@ -158,6 +158,64 @@
                     </Grid>
                     <Button Grid.Row="4" Content="Отправить" HorizontalAlignment="Right" Name="BtnSend" Click="BtnSend_Click"></Button>
                 </Grid>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" Height="80" Width="220">
+                        <Image Source="/Assets/Icons/360.png" Width="90" Height="65" Margin="5" />
+                        <Grid Width="87">
+                        <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="20"></RowDefinition>
+                                <RowDefinition Height="20"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                            
+                            <TextBlock Text="Поворотное" FontWeight="Bold" Grid.Row="1" Margin="5,2,0,2"></TextBlock>
+                            <TextBlock Text="устройство" FontWeight="Bold" Grid.Row="2" Height="28" Margin="5,2,5,10" Grid.RowSpan="2"></TextBlock>
+
+                         </Grid>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <GroupBox Header="Домашние координаты">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal" Grid.Row="0">
+                                <TextBlock Text="Хост" Width="120"></TextBlock>
+                                <TextBox Width="150" Name="TBHost"></TextBox>
+                            </StackPanel>
+                    
+                            <StackPanel Orientation="Horizontal" Grid.Row="1">
+                            <TextBlock Text="Широта" Width="120"></TextBlock>
+                            <TextBox Width="150" Name="TBLat"></TextBox>
+                        </StackPanel>
+                        
+                   
+                    <StackPanel Orientation="Horizontal" Grid.Row="2">
+                        <TextBlock Text="Долгота" Width="120"></TextBlock>
+                        <TextBox Width="150" Name="TBLong"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="3">
+                            <TextBlock Text="Высота над морем" Width="120"></TextBlock>
+                            <TextBox Width="150" Name="TBAlt"></TextBox>
+                        </StackPanel>
+
+
+                            <Button Grid.Row="4" Content="Отправить" HorizontalAlignment="Right" Name="BtnSendLatLong" Click="BtnSendLatLong_Click"></Button>
+                </Grid>
+                </GroupBox>
+                    </Grid>
             </TabItem>
         </TabControl>
     </Border>

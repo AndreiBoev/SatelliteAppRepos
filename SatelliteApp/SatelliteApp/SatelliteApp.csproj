@@ -18,7 +18,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>E:\Рабочий стол\WebSite\</PublishUrl>
+    <PublishUrl>C:\Users\alex9\Desktop\satapp\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -230,6 +230,8 @@
   </ItemGroup>
   <ItemGroup>
     <SplashScreen Include="Assets\Icons\Splash.png" />
+    <Resource Include="Assets\Icons\CoordsSet.png" />
+    <Resource Include="Assets\Icons\360.png" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
