@@ -85,7 +85,7 @@ namespace SatelliteApp.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.4.1")]
         public string DeviceUrl {
             get {
                 return ((string)(this["DeviceUrl"]));

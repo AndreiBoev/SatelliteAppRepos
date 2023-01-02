@@ -149,9 +149,27 @@
                 <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <GroupBox Header="Домашние координаты">
+                <GroupBox Header="Настройки отправки данных" Grid.Row="0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal" Grid.Row="0">
+                            <TextBlock Text="Хост" Width="120"></TextBlock>
+                            <TextBox Width="150" Height="25" Name="TBHost" Text="{Binding DeviceUrl}"></TextBox>
+                        </StackPanel>
+                        <Button Content="Сохранить" HorizontalAlignment="Right" Name="BtnSaveHost" Click="BtnSaveHost_Click" Grid.Row="0"></Button>
+
+                    </Grid>
+                </GroupBox>   
+                <GroupBox Header="Домашние координаты" Grid.Row="1">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"></RowDefinition>
@@ -160,28 +178,19 @@
                         <RowDefinition Height="auto"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
-                            <StackPanel Orientation="Horizontal" Grid.Row="0">
-                                <TextBlock Text="Хост" Width="120"></TextBlock>
-                                <TextBox Width="150" Name="TBHost" Text="{Binding DeviceUrl}"></TextBox>
-                            </StackPanel>
-                    
-                            <StackPanel Orientation="Horizontal" Grid.Row="1">
-                            <TextBlock Text="Широта" Width="120"></TextBlock>
-                                <TextBox Width="150" Name="TBLat" Text="{Binding HomeLat}"></TextBox>
-                        </StackPanel>
-                        
-                   
+                    <StackPanel Orientation="Horizontal" Grid.Row="1">
+                        <TextBlock Text="Широта" Width="120"></TextBlock>
+                        <TextBox Width="150" Name="TBLat" Text="{Binding HomeLat}"></TextBox>
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="2">
                         <TextBlock Text="Долгота" Width="120"></TextBlock>
-                                <TextBox Width="150" Name="TBLong" Text="{Binding HomeLong}"></TextBox>
+                         <TextBox Width="150" Name="TBLong" Text="{Binding HomeLong}"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="3">
-                            <TextBlock Text="Высота над морем" Width="120"></TextBlock>
-                                <TextBox Width="150" Name="TBAlt" Text="{Binding HomeAlt}"></TextBox>
-                        </StackPanel>
-
-
-                            <Button Grid.Row="4" Content="Отправить" HorizontalAlignment="Right" Name="BtnSendLatLong" Click="BtnSendLatLong_Click"></Button>
+                        <TextBlock Text="Высота над морем" Width="120"></TextBlock>
+                        <TextBox Width="150" Name="TBAlt" Text="{Binding HomeAlt}"></TextBox>
+                    </StackPanel>
+                    <Button Grid.Row="4" Content="Отправить" HorizontalAlignment="Right" Name="BtnSendLatLong" Click="BtnSendLatLong_Click"></Button>
                 </Grid>
                 </GroupBox>
                     </Grid>

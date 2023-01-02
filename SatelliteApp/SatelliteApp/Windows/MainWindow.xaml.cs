@@ -75,7 +75,7 @@ namespace SatelliteApp
             }
         }
 
-         private void _port_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        private void _port_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             _count++;
             int second = _settings.TimeNotificationSetting;
@@ -109,9 +109,10 @@ namespace SatelliteApp
                     #region Логика отправки запроса API
                     if (data[0] == "api") // дописать проверку на интернет 
                     {
-                        string path = "http://"+ _settings.DeviceUrl+"/set?satlat="
-                                + data[1] + "&satlong=" + data[2] + "&sath=" + data[3];
-                        CreateGetRequestAsync(path);
+                        //+ data[1] + "&satlong=" + data[2] + "&sath=" + data[3];
+                        string path = "http://" + _settings.DeviceUrl + "/api/v1/data/set/satgps";
+                        string home_pos = "{\"key\":\"SATAPPSP\",\"lat\":" + data[1].Replace(",", ".") + ",\"lon\":" + data[2].Replace(",", ".") + ",\"height\":" + data[3].Replace(",", ".") + "}";
+                        CreatePostRequestAsync(path, new StringContent(home_pos, Encoding.UTF8, "application/json"));
                         return;
                     }
                     #endregion
@@ -181,7 +182,14 @@ namespace SatelliteApp
             }
             catch  {  }
         }
-
+        async public static void CreatePostRequestAsync(string path, StringContent args)
+        {
+            try
+            {
+                await _client.PostAsync(path, args);
+            }
+            catch { }
+        }
         private void BtnAction_Click(object sender, RoutedEventArgs e)
         {
             if (_port.IsOpen)

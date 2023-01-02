@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\alex9\Desktop\SatelliteAppRepos-main\SatelliteApp\SatelliteApp\obj\Debug\
+C:\Users\alex9\Desktop\SatelliteAppRepos\SatelliteApp\SatelliteApp\obj\Debug\
 SatelliteApp
 none
 false
 DEBUG;TRACE
-C:\Users\alex9\Desktop\SatelliteAppRepos-main\SatelliteApp\SatelliteApp\App.xaml
+C:\Users\alex9\Desktop\SatelliteAppRepos\SatelliteApp\SatelliteApp\App.xaml
 21046403282
 258816407
 11-558457692
-31-1108063590
+31-1365685832
 Windows\MainWindow.xaml;Windows\SettingWindow.xaml;
 assets\icons\splash.png
-False
+True
 

@@ -41,6 +41,14 @@ namespace SatelliteApp.Windows
             }
             catch { }
         }
+        async public static void CreatePostRequestAsync(string path, StringContent args)
+        {
+            try
+            {
+                await _client.PostAsync(path,args);
+            }
+            catch { }
+        }
         public SettingWindow()
         {
             InitializeComponent();
@@ -79,7 +87,7 @@ namespace SatelliteApp.Windows
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            _settings.Save();
+            _settings.Save();_settings.Save();
             List<string> currentConfiguration = new List<string>();
             foreach (var config in _configurations)
             {
@@ -199,7 +207,6 @@ namespace SatelliteApp.Windows
             BtnSend.IsEnabled = true;
         }
 
-        
         private void BtnSendLatLong_Click(object sender, RoutedEventArgs e)
         {
             
@@ -211,15 +218,29 @@ namespace SatelliteApp.Windows
             {
                 try
                 {
-                    string path = "http://" + TBHost.Text + "/set?homelat=" + TBLat.Text + "&homelong=" + TBLong.Text + "&homealt=" + TBAlt.Text;
-                    CreateGetRequestAsync(path);
-                    MessageBox.Show("Oтправлено успешно.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                    string path = "http://" + _settings.DeviceUrl + "/api/v1/data/set/homegps";
+                    string home_pos = "{\"key\":\"SATAPPSP\",\"lat\":" + TBLat.Text.Replace(",", ".") + ",\"lon\":" + TBLong.Text.Replace(",", ".") + ",\"height\":" + TBAlt.Text.Replace(",", ".") + "}";
+                    CreatePostRequestAsync(path, new StringContent(home_pos, Encoding.UTF8, "application/json"));
+                    MessageBox.Show(home_pos, "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+            }
+        }
+
+        private void BtnSaveHost_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (string.IsNullOrWhiteSpace(TBHost.Text))
+            {
+                MessageBox.Show("Хост не указан", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            {
+               _settings.DeviceUrl=TBHost.Text;
             }
         }
     }

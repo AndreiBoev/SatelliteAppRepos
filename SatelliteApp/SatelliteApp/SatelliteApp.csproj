@@ -60,10 +60,10 @@
     <ApplicationIcon>Assets\Icons\Logo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>ED93CD87F5707CC4AEE88D34262561D0CFA1402D</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>33AAF51C8027D281F877DB9A18C9950FF765E065</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>SatelliteApp_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>SatelliteApp_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -189,6 +189,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="SatelliteApp_1_TemporaryKey.pfx" />
     <None Include="SatelliteApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
