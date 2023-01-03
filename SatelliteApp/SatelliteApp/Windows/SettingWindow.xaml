@@ -180,15 +180,15 @@
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" Grid.Row="1">
                         <TextBlock Text="Широта" Width="120"></TextBlock>
-                        <TextBox Width="150" Name="TBLat" Text="{Binding HomeLat}"></TextBox>
+                        <TextBox Width="150" Name="TBLat" Text="{Binding HomeLat}" TextChanged="TBLat_TextChanged"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="2">
                         <TextBlock Text="Долгота" Width="120"></TextBlock>
-                         <TextBox Width="150" Name="TBLong" Text="{Binding HomeLong}"></TextBox>
+                         <TextBox Width="150" Name="TBLong" Text="{Binding HomeLong}" TextChanged="TBLong_TextChanged"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="3">
                         <TextBlock Text="Высота над морем" Width="120"></TextBlock>
-                        <TextBox Width="150" Name="TBAlt" Text="{Binding HomeAlt}"></TextBox>
+                        <TextBox Width="150" Name="TBAlt" Text="{Binding HomeAlt}" TextChanged="TBAlt_TextChanged"></TextBox>
                     </StackPanel>
                     <Button Grid.Row="4" Content="Отправить" HorizontalAlignment="Right" Name="BtnSendLatLong" Click="BtnSendLatLong_Click"></Button>
                 </Grid>

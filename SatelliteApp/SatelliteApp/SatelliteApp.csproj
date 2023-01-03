@@ -142,6 +142,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Windows\CustomNet.cs" />
     <Compile Include="Classes\Chart.cs" />
     <Compile Include="Classes\Parameter.cs" />
     <Compile Include="Classes\Configuration.cs" />

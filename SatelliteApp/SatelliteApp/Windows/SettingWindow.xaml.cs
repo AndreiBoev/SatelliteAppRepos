@@ -19,6 +19,7 @@ using Microsoft.Win32;
 using Newtonsoft.Json;
 using SatelliteApp.Classes;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 
 namespace SatelliteApp.Windows
 {
@@ -33,22 +34,6 @@ namespace SatelliteApp.Windows
         private static HttpClient _client = new HttpClient();
         private Properties.Settings _settings = Properties.Settings.Default;
         
-        async public static void CreateGetRequestAsync(string path)
-        {
-            try
-            {
-                await _client.GetAsync(path);
-            }
-            catch { }
-        }
-        async public static void CreatePostRequestAsync(string path, StringContent args)
-        {
-            try
-            {
-                await _client.PostAsync(path,args);
-            }
-            catch { }
-        }
         public SettingWindow()
         {
             InitializeComponent();
@@ -87,7 +72,7 @@ namespace SatelliteApp.Windows
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            _settings.Save();_settings.Save();
+            _settings.Save();
             List<string> currentConfiguration = new List<string>();
             foreach (var config in _configurations)
             {
@@ -219,9 +204,14 @@ namespace SatelliteApp.Windows
                 try
                 {
                     string path = "http://" + _settings.DeviceUrl + "/api/v1/data/set/homegps";
-                    string home_pos = "{\"key\":\"SATAPPSP\",\"lat\":" + TBLat.Text.Replace(",", ".") + ",\"lon\":" + TBLong.Text.Replace(",", ".") + ",\"height\":" + TBAlt.Text.Replace(",", ".") + "}";
-                    CreatePostRequestAsync(path, new StringContent(home_pos, Encoding.UTF8, "application/json"));
-                    MessageBox.Show(home_pos, "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                    NetService.gps_data home_pos = new NetService.gps_data
+                    {
+                        lat = Convert.ToDouble(TBLat.Text),
+                        lon = Convert.ToDouble(TBLong.Text),
+                        height = Convert.ToDouble(TBAlt.Text)
+                    };
+                    Task<HttpResponseMessage> task = NetService.Post(path, home_pos);
+                    MessageBox.Show("Ок", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 }
                 catch (Exception ex)
@@ -242,6 +232,25 @@ namespace SatelliteApp.Windows
             {
                _settings.DeviceUrl=TBHost.Text;
             }
+        }
+        Regex rgx = new Regex("[^(0-9,)]");
+        private void TBLat_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TBLat.Text = TBLat.Text.Replace(".", ",");
+            TBLat.Text=rgx.Replace(TBLat.Text, "");
+
+        }
+
+        private void TBLong_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TBLong.Text = TBLong.Text.Replace(".", ",");
+            TBLong.Text = rgx.Replace(TBLong.Text, "");
+        }
+
+        private void TBAlt_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TBAlt.Text = TBAlt.Text.Replace(".", ",");
+            TBAlt.Text = rgx.Replace(TBAlt.Text, "");
         }
     }
 }
