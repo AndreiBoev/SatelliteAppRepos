@@ -163,7 +163,7 @@
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Horizontal" Grid.Row="0">
                             <TextBlock Text="Хост" Width="120"></TextBlock>
-                            <TextBox Width="150" Height="25" Name="TBHost" Text="{Binding DeviceUrl}"></TextBox>
+                            <TextBox Width="150" Height="25" Name="TBHost" Text="{Binding DeviceUrl}"/>
                         </StackPanel>
                         <Button Content="Сохранить" HorizontalAlignment="Right" Name="BtnSaveHost" Click="BtnSaveHost_Click" Grid.Row="0"></Button>
 
@@ -180,15 +180,15 @@
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" Grid.Row="1">
                         <TextBlock Text="Широта" Width="120"></TextBlock>
-                        <TextBox Width="150" Name="TBLat" Text="{Binding HomeLat}" TextChanged="TBLat_TextChanged"></TextBox>
-                    </StackPanel>
+                        <TextBox Width="150" Name="TBLat" Text="{Binding HomeLat}" PreviewTextInput="CheckHumberInTB"/>
+                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="2">
                         <TextBlock Text="Долгота" Width="120"></TextBlock>
-                         <TextBox Width="150" Name="TBLong" Text="{Binding HomeLong}" TextChanged="TBLong_TextChanged"></TextBox>
+                         <TextBox Width="150" Name="TBLong" Text="{Binding HomeLong}" PreviewTextInput="CheckHumberInTB"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="3">
                         <TextBlock Text="Высота над морем" Width="120"></TextBlock>
-                        <TextBox Width="150" Name="TBAlt" Text="{Binding HomeAlt}" TextChanged="TBAlt_TextChanged"></TextBox>
+                        <TextBox Width="150" Name="TBAlt" Text="{Binding HomeAlt}" PreviewTextInput="CheckHumberInTB"/>
                     </StackPanel>
                     <Button Grid.Row="4" Content="Отправить" HorizontalAlignment="Right" Name="BtnSendLatLong" Click="BtnSendLatLong_Click"></Button>
                 </Grid>

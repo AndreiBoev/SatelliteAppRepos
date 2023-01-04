@@ -233,24 +233,14 @@ namespace SatelliteApp.Windows
                _settings.DeviceUrl=TBHost.Text;
             }
         }
-        Regex rgx = new Regex("[^(0-9,)]");
-        private void TBLat_TextChanged(object sender, TextChangedEventArgs e)
+        private void CheckHumberInTB(object sender, TextCompositionEventArgs e)
         {
-            TBLat.Text = TBLat.Text.Replace(".", ",");
-            TBLat.Text=rgx.Replace(TBLat.Text, "");
-
-        }
-
-        private void TBLong_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            TBLong.Text = TBLong.Text.Replace(".", ",");
-            TBLong.Text = rgx.Replace(TBLong.Text, "");
-        }
-
-        private void TBAlt_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            TBAlt.Text = TBAlt.Text.Replace(".", ",");
-            TBAlt.Text = rgx.Replace(TBAlt.Text, "");
+            int val;
+            if (!Int32.TryParse(e.Text, out val) && e.Text != "-" && e.Text != "," | ((sender as TextBox).Text.Contains(",") && e.Text == ","))
+            {
+                e.Handled = true;
+            }
+            //MessageBox.Show((sender as TextBox).Text, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }
