@@ -17,7 +17,7 @@ namespace SatelliteApp
             public double lon { get; set; }
             public double height { get; set; }
         }
-
+        private static bool _setted_timeout = false;
         private static HttpClient _client = new HttpClient();
         async public static Task<HttpResponseMessage> Post(string path, object obj){
             string jsonString = JsonConvert.SerializeObject(obj);
@@ -28,6 +28,13 @@ namespace SatelliteApp
         {
             var response = await _client.GetAsync(path);
             return response;
+        }
+        public static void SetTimeout(TimeSpan t)
+        {
+            if (!_setted_timeout) { 
+                _client.Timeout = t;
+                _setted_timeout = true;
+            }
         }
     }
 }

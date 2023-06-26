@@ -60,10 +60,10 @@
     <ApplicationIcon>Assets\Icons\Logo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>33AAF51C8027D281F877DB9A18C9950FF765E065</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>CF96F9E51D361D82852F281ABD084EE19FDB1233</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>SatelliteApp_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>SatelliteApp_3_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -150,6 +150,7 @@
     <Compile Include="Windows\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="_client\async.cs" />
     <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -191,6 +192,8 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="SatelliteApp_1_TemporaryKey.pfx" />
+    <None Include="SatelliteApp_2_TemporaryKey.pfx" />
+    <None Include="SatelliteApp_3_TemporaryKey.pfx" />
     <None Include="SatelliteApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

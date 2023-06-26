@@ -38,7 +38,7 @@ namespace SatelliteApp
         private List<SelectedConfiguration> _selectedConfigurations = new List<SelectedConfiguration>();
         private Properties.Settings _settings = Properties.Settings.Default;
         private string _path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments,
-                Environment.SpecialFolderOption.Create) + @"\Satellite\";
+                Environment.SpecialFolderOption.Create) + @"\SatelliteAppLogs\";
         private static HttpClient _client = new HttpClient();
 
         public MainWindow()
@@ -54,7 +54,7 @@ namespace SatelliteApp
             _timer.Tick += _timer_Tick;
             _timer.Interval = new TimeSpan(0, 0, 1);
             DataContext = _settings;
-
+            NetService.SetTimeout(TimeSpan.FromSeconds(1));
 
             _selectedConfigurations.Add(new SelectedConfiguration());
             ICConfigurations.ItemsSource = _selectedConfigurations;
@@ -77,7 +77,7 @@ namespace SatelliteApp
 
         private void _port_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            _count++;
+            
             int second = _settings.TimeNotificationSetting;
             if (second != 0)
             {
@@ -92,10 +92,13 @@ namespace SatelliteApp
                 _indata = _indata.Replace("\r", "");
                 string[] data = _indata.Split(_settings.Separator);
                 TBlockCount.Text = _count.ToString();
-
-                using (StreamWriter sw = new StreamWriter(_path, true, System.Text.Encoding.Default))
+                if (data[0] != "api")
                 {
-                    sw.WriteLine(_indata = dateTimeNow + _settings.Separator + _indata);
+                    _count++;
+                    using (StreamWriter sw = new StreamWriter(_path, true, System.Text.Encoding.Default))
+                    {
+                        sw.WriteLine(_indata = dateTimeNow + _settings.Separator + _indata);
+                    }
                 }
 
                 if (CBAutoScroll.IsChecked.Value)
@@ -146,6 +149,7 @@ namespace SatelliteApp
                                     var chart = configuration.Parameters[j].Chart;
                                     if (chart != null)
                                     {
+                                        chart.wpfPlot.Configuration.Zoom = false;
                                         chart.Data[chart.DataIndex] = double.Parse(data[j + 1], CultureInfo.InvariantCulture);
                                         chart.SignalPlot.MaxRenderIndex = chart.DataIndex;
                                         chart.DataIndex++;
@@ -210,7 +214,7 @@ namespace SatelliteApp
                 ICConfigurations.IsEnabled = true;
                 BtnAddConfig.IsEnabled = true;
                 _path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments,
-                Environment.SpecialFolderOption.Create) + @"\Satellite\";
+                Environment.SpecialFolderOption.Create) + @"\SatelliteAppLogs\";
             }
             else
             {
@@ -246,7 +250,7 @@ namespace SatelliteApp
                     {
                         dirInfo.Create();
                     }
-                    _path = _path + DateTime.Now.ToString("dd-MM-yyyy hh.mm.ss") + ".txt";
+                    _path = _path + DateTime.Now.ToString("dd-MM-yyyy HH.mm.ss") + ".txt";
                 }
                 catch (Exception ex)
                 {
