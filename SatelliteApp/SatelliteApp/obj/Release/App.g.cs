@@ -75,6 +75,8 @@ namespace SatelliteApp {
         [System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "4.0.0.0")]
         public static void Main() {
+            SplashScreen splashScreen = new SplashScreen("assets/icons/splash.png");
+            splashScreen.Show(true);
             SatelliteApp.App app = new SatelliteApp.App();
             app.InitializeComponent();
             app.Run();

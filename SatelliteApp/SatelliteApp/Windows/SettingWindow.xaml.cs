@@ -18,6 +18,8 @@ using GMap.NET.MapProviders;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using SatelliteApp.Classes;
+using System.Net.Http;
+using System.Text.RegularExpressions;
 
 namespace SatelliteApp.Windows
 {
@@ -29,6 +31,9 @@ namespace SatelliteApp.Windows
         private string _file = "C:\\Users\\" + Environment.UserName + "\\AppData\\Local\\GMap.NET\\TileDBv5\\en\\Data.gmdb";
         private List<Configuration> _configurations = new List<Configuration>();
 
+        private static HttpClient _client = new HttpClient();
+        private Properties.Settings _settings = Properties.Settings.Default;
+        
         public SettingWindow()
         {
             InitializeComponent();
@@ -38,12 +43,17 @@ namespace SatelliteApp.Windows
                 SPTimeNotification.IsEnabled = true;
                 CBTimeNotification.IsChecked = true;
             }
+            DataContext = _settings;
             TBTimeNotification.Text = timeNotification.ToString();
             DataContext = Properties.Settings.Default;
             CBMapProviders.ItemsSource = GMapProviders.List;
             _configurations = JsonConvert.DeserializeObject<List<Configuration>>(Properties.Settings.Default.ConfigurationsList);
             DGConfigurations.ItemsSource = _configurations;
             CBMapProviders.SelectedItem = GMapProviders.TryGetProvider(Properties.Settings.Default.MapProvider);
+            TBHost.Text = _settings.DeviceUrl;
+            TBLat.Text = _settings.HomeLat;
+            TBLong.Text = _settings.HomeLong;
+            TBAlt.Text = _settings.HomeAlt;
         }
 
         private void CheckBox_Click(object sender, RoutedEventArgs e)
@@ -62,6 +72,7 @@ namespace SatelliteApp.Windows
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            _settings.Save();
             List<string> currentConfiguration = new List<string>();
             foreach (var config in _configurations)
             {
@@ -179,6 +190,57 @@ namespace SatelliteApp.Windows
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             BtnSend.IsEnabled = true;
+        }
+
+        private void BtnSendLatLong_Click(object sender, RoutedEventArgs e)
+        {
+            
+            if (string.IsNullOrWhiteSpace(TBLat.Text) || string.IsNullOrWhiteSpace(TBLong.Text) || string.IsNullOrWhiteSpace(TBAlt.Text))
+            {
+                MessageBox.Show("Все поля обязательны для заполнения", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            {
+                try
+                {
+                    string path = "http://" + _settings.DeviceUrl + "/api/v1/data/set/homegps";
+                    NetService.gps_data home_pos = new NetService.gps_data
+                    {
+                        lat = Convert.ToDouble(TBLat.Text),
+                        lon = Convert.ToDouble(TBLong.Text),
+                        height = Convert.ToDouble(TBAlt.Text)
+                    };
+                    Task<HttpResponseMessage> task = NetService.Post(path, home_pos);
+                    MessageBox.Show("Ок", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void BtnSaveHost_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (string.IsNullOrWhiteSpace(TBHost.Text))
+            {
+                MessageBox.Show("Хост не указан", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            {
+               _settings.DeviceUrl=TBHost.Text;
+            }
+        }
+        private void CheckHumberInTB(object sender, TextCompositionEventArgs e)
+        {
+            int val;
+            if (!Int32.TryParse(e.Text, out val) && e.Text != "-" && e.Text != "," | ((sender as TextBox).Text.Contains(",") && e.Text == ","))
+            {
+                e.Handled = true;
+            }
+            //MessageBox.Show((sender as TextBox).Text, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

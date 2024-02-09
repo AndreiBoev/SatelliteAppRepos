@@ -18,7 +18,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>E:\Рабочий стол\WebSite\</PublishUrl>
+    <PublishUrl>C:\Users\alex9\Desktop\satapp\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -60,10 +60,10 @@
     <ApplicationIcon>Assets\Icons\Logo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>ED93CD87F5707CC4AEE88D34262561D0CFA1402D</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>CF96F9E51D361D82852F281ABD084EE19FDB1233</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>SatelliteApp_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>SatelliteApp_3_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -142,6 +142,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Windows\CustomNet.cs" />
     <Compile Include="Classes\Chart.cs" />
     <Compile Include="Classes\Parameter.cs" />
     <Compile Include="Classes\Configuration.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="Windows\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="_client\async.cs" />
     <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -189,6 +191,9 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="SatelliteApp_1_TemporaryKey.pfx" />
+    <None Include="SatelliteApp_2_TemporaryKey.pfx" />
+    <None Include="SatelliteApp_3_TemporaryKey.pfx" />
     <None Include="SatelliteApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -230,6 +235,7 @@
   </ItemGroup>
   <ItemGroup>
     <SplashScreen Include="Assets\Icons\Splash.png" />
+    <Resource Include="Assets\Icons\Rotator.png" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

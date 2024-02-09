@@ -16,26 +16,6 @@
                     </StackPanel>
                 </TabItem.Header>
                 <StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Скорость(по умолчанию):"></TextBlock>
-                        <ComboBox Name="CBSpeed" SelectedIndex="{Binding SpeedIndexSetting, Mode=TwoWay}">
-                            <ComboBoxItem Content="300"></ComboBoxItem>
-                            <ComboBoxItem Content="1200"></ComboBoxItem>
-                            <ComboBoxItem Content="2400"></ComboBoxItem>
-                            <ComboBoxItem Content="4800"></ComboBoxItem>
-                            <ComboBoxItem Content="9600"></ComboBoxItem>
-                            <ComboBoxItem Content="19200"></ComboBoxItem>
-                            <ComboBoxItem Content="38400"></ComboBoxItem>
-                            <ComboBoxItem Content="57600"></ComboBoxItem>
-                            <ComboBoxItem Content="74880"></ComboBoxItem>
-                            <ComboBoxItem Content="115200"></ComboBoxItem>
-                            <ComboBoxItem Content="230400"></ComboBoxItem>
-                            <ComboBoxItem Content="250000"></ComboBoxItem>
-                            <ComboBoxItem Content="500000"></ComboBoxItem>
-                            <ComboBoxItem Content="1000000"></ComboBoxItem>
-                            <ComboBoxItem Content="2000000"></ComboBoxItem>
-                        </ComboBox>
-                    </StackPanel>
                     <GroupBox Width="350" HorizontalAlignment="Left">
                         <GroupBox.Header>
                             <CheckBox Content="Звуковое уведомление о потере сигнала" Name="CBTimeNotification" Click="CheckBox_Click"></CheckBox>
@@ -83,7 +63,7 @@
                                 </ContextMenu>
                             </DataGrid.ContextMenu>
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Параметр" Width="*" Binding="{Binding Name, Mode=TwoWay}"></DataGridTextColumn>
+                                <DataGridTextColumn Header="Параметр" Width="*" Binding="{Binding Name, Mode=TwoWay}" CanUserSort="false"></DataGridTextColumn>
                             </DataGrid.Columns>
                         </DataGrid>
                         <GroupBox Grid.Column="2" Header="Карта" Height="100" VerticalAlignment="Top" Margin="0">
@@ -158,6 +138,62 @@
                     </Grid>
                     <Button Grid.Row="4" Content="Отправить" HorizontalAlignment="Right" Name="BtnSend" Click="BtnSend_Click"></Button>
                 </Grid>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" Height="80" Width="220">
+                        <Image Source="/Assets/Icons/Rotator.png" Width="90" Height="65" Margin="5" />
+                        <TextBlock Text="Поворотное устройство" TextWrapping="Wrap" FontWeight="Bold" Width="100"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <GroupBox Header="Настройки отправки данных" Grid.Row="0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal" Grid.Row="0">
+                            <TextBlock Text="Хост" Width="120"></TextBlock>
+                            <TextBox Width="150" Height="25" Name="TBHost" Text="{Binding DeviceUrl}"/>
+                        </StackPanel>
+                        <Button Content="Сохранить" HorizontalAlignment="Right" Name="BtnSaveHost" Click="BtnSaveHost_Click" Grid.Row="0"></Button>
+
+                    </Grid>
+                </GroupBox>   
+                <GroupBox Header="Домашние координаты" Grid.Row="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Row="1">
+                        <TextBlock Text="Широта" Width="120"></TextBlock>
+                        <TextBox Width="150" Name="TBLat" Text="{Binding HomeLat}" PreviewTextInput="CheckHumberInTB"/>
+                     </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="2">
+                        <TextBlock Text="Долгота" Width="120"></TextBlock>
+                         <TextBox Width="150" Name="TBLong" Text="{Binding HomeLong}" PreviewTextInput="CheckHumberInTB"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="3">
+                        <TextBlock Text="Высота над морем" Width="120"></TextBlock>
+                        <TextBox Width="150" Name="TBAlt" Text="{Binding HomeAlt}" PreviewTextInput="CheckHumberInTB"/>
+                    </StackPanel>
+                    <Button Grid.Row="4" Content="Отправить" HorizontalAlignment="Right" Name="BtnSendLatLong" Click="BtnSendLatLong_Click"></Button>
+                </Grid>
+                </GroupBox>
+                    </Grid>
             </TabItem>
         </TabControl>
     </Border>

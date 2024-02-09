@@ -38,7 +38,7 @@ namespace SatelliteApp
         private List<SelectedConfiguration> _selectedConfigurations = new List<SelectedConfiguration>();
         private Properties.Settings _settings = Properties.Settings.Default;
         private string _path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments,
-                Environment.SpecialFolderOption.Create) + @"\Satellite\";
+                Environment.SpecialFolderOption.Create) + @"\SatelliteAppLogs\";
         private static HttpClient _client = new HttpClient();
 
         public MainWindow()
@@ -54,10 +54,11 @@ namespace SatelliteApp
             _timer.Tick += _timer_Tick;
             _timer.Interval = new TimeSpan(0, 0, 1);
             DataContext = _settings;
-
+            NetService.SetTimeout(TimeSpan.FromSeconds(1));
 
             _selectedConfigurations.Add(new SelectedConfiguration());
             ICConfigurations.ItemsSource = _selectedConfigurations;
+
         }
 
         private void _timer_Tick(object sender, EventArgs e)
@@ -74,9 +75,9 @@ namespace SatelliteApp
             }
         }
 
-         private void _port_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        private void _port_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            _count++;
+            
             int second = _settings.TimeNotificationSetting;
             if (second != 0)
             {
@@ -91,10 +92,13 @@ namespace SatelliteApp
                 _indata = _indata.Replace("\r", "");
                 string[] data = _indata.Split(_settings.Separator);
                 TBlockCount.Text = _count.ToString();
-
-                using (StreamWriter sw = new StreamWriter(_path, true, System.Text.Encoding.Default))
+                if (data[0] != "api")
                 {
-                    sw.WriteLine(_indata = dateTimeNow + _settings.Separator + _indata);
+                    _count++;
+                    using (StreamWriter sw = new StreamWriter(_path, true, System.Text.Encoding.Default))
+                    {
+                        sw.WriteLine(_indata = dateTimeNow + _settings.Separator + _indata);
+                    }
                 }
 
                 if (CBAutoScroll.IsChecked.Value)
@@ -108,9 +112,18 @@ namespace SatelliteApp
                     #region Логика отправки запроса API
                     if (data[0] == "api") // дописать проверку на интернет 
                     {
-                        string path = "http://192.168.1.1/set?satlat="
-                                + data[1] + "&satlong=" + data[2] + "&sath=" + data[3];
-                        CreateGetRequestAsync(path);
+                        //+ data[1] + "&satlong=" + data[2] + "&sath=" + data[3];
+                        /*string path = "http://" + _settings.DeviceUrl + "/api/v1/data/set/satgps";
+                        string home_pos = "{\"key\":\"SATAPPSP\",\"lat\":" + data[1].Replace(",", ".") + ",\"lon\":" + data[2].Replace(",", ".") + ",\"height\":" + data[3].Replace(",", ".") + "}";
+                        CreatePostRequestAsync(path, new StringContent(home_pos, Encoding.UTF8, "application/json"));*/
+
+                        string path = "http://" + _settings.DeviceUrl + "/api/v1/data/set/satgps";
+                        NetService.gps_data sat_pos = new NetService.gps_data { 
+                            lat = Convert.ToDouble(data[1].Replace(".", ",")),
+                            lon = Convert.ToDouble(data[2].Replace(".", ",")),
+                            height = Convert.ToDouble(data[3].Replace(".", ","))
+                        };
+                        Task<HttpResponseMessage> task = NetService.Post(path, sat_pos);
                         return;
                     }
                     #endregion
@@ -136,6 +149,7 @@ namespace SatelliteApp
                                     var chart = configuration.Parameters[j].Chart;
                                     if (chart != null)
                                     {
+                                        chart.wpfPlot.Configuration.Zoom = false;
                                         chart.Data[chart.DataIndex] = double.Parse(data[j + 1], CultureInfo.InvariantCulture);
                                         chart.SignalPlot.MaxRenderIndex = chart.DataIndex;
                                         chart.DataIndex++;
@@ -153,7 +167,14 @@ namespace SatelliteApp
                                     }
                                 }
                                 (MapMain.Markers.FirstOrDefault() as GMapRoute).Points.Add(pointLatLng);
+                                var center = MapMain.Position;
                                 MapMain.Position = pointLatLng;
+                                if (!CBNewPointInCenter.IsChecked.Value) {
+                                    MapMain.Position = center;
+
+                                }
+                                
+
                             }
                             break;
                         }
@@ -163,15 +184,6 @@ namespace SatelliteApp
             }
             );
 
-        }
-
-        async public static void CreateGetRequestAsync(string path)
-        {
-            try
-            {
-                await _client.GetAsync(path);
-            }
-            catch  {  }
         }
 
         private void BtnAction_Click(object sender, RoutedEventArgs e)
@@ -202,7 +214,7 @@ namespace SatelliteApp
                 ICConfigurations.IsEnabled = true;
                 BtnAddConfig.IsEnabled = true;
                 _path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments,
-                Environment.SpecialFolderOption.Create) + @"\Satellite\";
+                Environment.SpecialFolderOption.Create) + @"\SatelliteAppLogs\";
             }
             else
             {
@@ -223,6 +235,8 @@ namespace SatelliteApp
                     _port.PortName = CBPorts.Text;
                     _port.BaudRate = int.Parse(CBSpeed.Text);
                     _port.Open();
+                    //save
+                    _settings.Save();
                     ImAction.Source =
                     new BitmapImage(new Uri(@"/Assets/Icons/Stop.png", UriKind.RelativeOrAbsolute));
                     SPPort.IsEnabled = false;
@@ -236,7 +250,7 @@ namespace SatelliteApp
                     {
                         dirInfo.Create();
                     }
-                    _path = _path + DateTime.Now.ToString("dd-MM-yyyy hh.mm.ss") + ".txt";
+                    _path = _path + DateTime.Now.ToString("dd-MM-yyyy HH.mm.ss") + ".txt";
                 }
                 catch (Exception ex)
                 {
